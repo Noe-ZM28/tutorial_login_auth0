@@ -3,7 +3,7 @@ from jose import jwt
 from social_core.backends.oauth import BaseOAuth2
 
 
-class Auth0(BaseOAuth2):
+class Auth0(BaseOAuth2):# conectara Django con Aunth0
     """Auth0 OAuth authentication backend"""
     name = 'auth0'
     SCOPE_SEPARATOR = ' '
@@ -11,8 +11,7 @@ class Auth0(BaseOAuth2):
     REDIRECT_STATE = False
     EXTRA_DATA = [
         ('picture', 'picture'),
-        ('email', 'email')
-    ]
+        ('email', 'email')]
 
     def authorization_url(self):
         return 'https://' + self.setting('DOMAIN') + '/authorize'
@@ -31,6 +30,8 @@ class Auth0(BaseOAuth2):
         issuer = 'https://' + self.setting('DOMAIN') + '/'
         audience = self.setting('KEY')  # CLIENT_ID
         payload = jwt.decode(id_token, jwks.read(), algorithms=['RS256'], audience=audience, issuer=issuer)
+
+        
         return {'username': payload['nickname'],
                 'first_name': payload['name'],
                 'picture': payload['picture'],
